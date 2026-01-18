@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finnley - O Infiltrado</title>
+    <link rel="stylesheet" href="cena1.css">
+    <style>
+        body { background: #1a1a1a; color: #ddd; }
+        .container { max-width: 800px; margin: 50px auto; padding: 20px; border: 1px solid #e2b022; }
+        .alerta-disfarce { font-style: italic; color: #e2b022; margin-bottom: 10px; }
+        
+        /* Container para os botões de resultado que aparecem após a rolagem */
+        .resultado-acao {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="ficha-lateral">
+        <h4>FINNLEY</h4>
+        <p>🏃 AGI <span id="stat-agi">0</span></p>
+        <p>🎭 ENG <span id="stat-eng">0</span></p>
+        <p>👤 FUR <span id="stat-fur">0</span></p>
+        <p>⚔️ LUT <span id="stat-lut">0</span></p>
+        <p>🛡️ ESQ <span id="stat-esq">0</span></p>
+    </div>
+
+    <div class="container">
+        <h1 class="titulo">A Arte do Disfarce</h1>
+        
+        <div class="texto">
+            <p>Você veste a túnica cinza que roubou de um dos criados na taverna. Carregando uma bandeja de prata vazia, você se aproxima da entrada de serviço.</p>
+            <p>O Chefe de Segurança, um homem com cicatrizes no rosto, para você na porta: <em>"Atrasado de novo, rapaz? Qual o seu nome e quem te contratou?"</em></p>
+        </div>
+
+        <div class="rolagem-d20">
+            <p class="alerta-disfarce">Teste de Enganação (Dificuldade 12)</p>
+            <button id="btn-rolar" class="rolar-d20" onclick="tentarDisfarce()">Tentar Convencer o Guarda</button>
+            
+            <div id="resultado-teste"></div>
+            
+            <div id="proximos-passos" class="resultado-acao">
+                </div>
+        </div>
+    </div>
+
+    <script src="rpg-logica.js"></script>
+    <script>
+        function tentarDisfarce() {
+            // Executa o teste usando o atributo 'eng' (Enganação) contra Dificuldade 12
+            const passou = realizarTeste('eng', 12);
+            
+            // Desabilita o botão para evitar múltiplas rolagens
+            const btnRolar = document.getElementById('btn-rolar');
+            btnRolar.disabled = true;
+            btnRolar.style.opacity = "0.5";
+
+            const containerPassos = document.getElementById('proximos-passos');
+            containerPassos.style.display = 'block';
+
+            if (passou) {
+                containerPassos.innerHTML = `
+                    <p style="color: #4CAF50;">O guarda olha para sua bandeja e resmunga, acreditando na sua mentira.</p>
+                    <a href="cozinha-sucesso.html" class="opcao" style="display:inline-block; text-decoration:none; text-align:center;">Entrar na Cozinha</a>
+                `;
+            } else {
+                containerPassos.innerHTML = `
+                    <p style="color: #ff4500;">O guarda estreita os olhos. "Suas mãos não são de trabalhador... são mãos de um ladrão!"</p>
+                    <a href="prisao-fracasso.html" class="opcao" style="display:inline-block; text-decoration:none; text-align:center; background:#8b0000;">Tentar fugir ou ser capturado</a>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

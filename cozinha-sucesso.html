@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finnley - O Caos da Cozinha</title>
+    <link rel="stylesheet" href="cena1.css">
+</head>
+<body>
+    <div class="ficha-lateral">
+        <h4>FINNLEY</h4>
+        <p>🏃 AGI <span id="stat-agi">0</span></p>
+        <p>🎭 ENG <span id="stat-eng">0</span></p>
+        <p>👤 FUR <span id="stat-fur">0</span></p>
+        <p>⚔️ LUT <span id="stat-lut">0</span></p>
+        <p>🛡️ ESQ <span id="stat-esq">0</span></p>
+    </div>
+
+    <video class="video-fundo" autoplay muted loop>
+        <source src="cozinha-movimentada.mp4" type="video/mp4">
+    </video>
+
+    <div class="container">
+        <h1 class="titulo">O Estômago da Besta</h1>
+        
+        <div class="texto">
+            <p>O calor é sufocante e o cheiro de assado preenche o ar. Dezenas de servos correm com bandejas, ignorando sua presença por enquanto.</p>
+            <p>Para chegar aos aposentos de Lorde Everard, você precisa atravessar o salão principal. Um mestre cuca grita ordens à esquerda, enquanto à direita, um carrinho de vinhos está sendo preparado para o baile.</p>
+        </div>
+
+        <div class="opcoes" id="opcoes-cozinha">
+            <button class="opcao" onclick="testarCozinha('fur', 14, 'corredor-sombras')">1. Misturar-se às sombras entre os caldeirões (Furtividade)</button>
+            <button class="opcao" onclick="testarCozinha('agi', 13, 'carrinho-vinhos')">2. Deslizar por trás do carrinho de vinhos (Agilidade)</button>
+        </div>
+
+        <div class="rolagem-d20">
+            <div id="resultado-teste"></div>
+            <div id="proximo-passo" style="display:none; margin-top:20px;"></div>
+        </div>
+    </div>
+
+    <script src="rpg-logica.js"></script>
+    <script>
+        function testarCozinha(attr, dif, destino) {
+            const passou = realizarTeste(attr, dif);
+            document.getElementById('opcoes-cozinha').style.pointerEvents = 'none';
+            document.getElementById('opcoes-cozinha').style.opacity = '0.5';
+            
+            const btnContainer = document.getElementById('proximo-passo');
+            btnContainer.style.display = 'block';
+
+            if (passou) {
+                btnContainer.innerHTML = `<a href="${destino}.html" class="botao-iniciar">Avançar para o corredor</a>`;
+            } else {
+                btnContainer.innerHTML = `<a href="video-transicao.html?video=falha-cozinha&destino=prisao-fracasso" class="botao-iniciar" style="background:#8b0000;">Você foi descoberto!</a>`;
+            }
+        }
+    </script>
+</body>
+</html>

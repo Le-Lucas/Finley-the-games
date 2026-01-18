@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Finnley - O Corredor Proibido</title>
+    <link rel="stylesheet" href="cena1.css">
+</head>
+<body>
+    <div class="ficha-lateral">
+        <h4>FINNLEY</h4>
+        <p>🏃 AGI <span id="stat-agi">0</span></p>
+        <p>🎭 ENG <span id="stat-eng">0</span></p>
+        <p>👤 FUR <span id="stat-fur">0</span></p>
+        <p>⚔️ LUT <span id="stat-lut">0</span></p>
+        <p>🛡️ ESQ <span id="stat-esq">0</span></p>
+    </div>
+
+    <div class="container">
+        <h1 class="titulo">As Portas do Tesouro</h1>
+        <div class="texto">
+            <p>Você deixou o barulho da cozinha para trás. O tapete vermelho abafa seus passos, mas você ouve o tilintar de armaduras. Dois guardas conversam na porta da biblioteca.</p>
+            <p>A Sala do Lorde está logo adiante, mas a porta está trancada com um mecanismo complexo.</p>
+        </div>
+
+        <div class="opcoes" id="opcoes-corredor">
+            <button class="opcao" onclick="testarPorta('fur', 16, 'sala-lord')">1. Arrombar a fechadura sem fazer barulho (Furtividade)</button>
+            <button class="opcao" onclick="testarPorta('esq', 15, 'sala-lord')">2. Esperar os guardas passarem e dar um salto rápido (Esquiva)</button>
+        </div>
+
+        <div id="resultado-teste"></div>
+        <div id="proximo-passo" style="display:none; margin-top:20px;"></div>
+    </div>
+
+    <script src="rpg-logica.js"></script>
+    <script>
+        function testarPorta(attr, dif, destino) {
+            const passou = realizarTeste(attr, dif);
+            document.getElementById('opcoes-corredor').style.pointerEvents = 'none';
+            
+            const btnContainer = document.getElementById('proximo-passo');
+            btnContainer.style.display = 'block';
+
+            if (passou) {
+                btnContainer.innerHTML = `<a href="${destino}.html" class="botao-iniciar">Entrar na Sala do Tesouro</a>`;
+            } else {
+                // Usa a página de transição universal que criamos!
+                window.location.href = "video-transicao.html?video=falha-captura&destino=prisao-fracasso";
+            }
+        }
+    </script>
+</body>
+</html>

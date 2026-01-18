@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finnley - Armadilha na Chaminé</title>
+  <link rel="stylesheet" href="cena1.css">
+  <style>
+    .consequencia {
+      background-color: rgba(200, 0, 0, 0.3);
+      border-left: 4px solid #ff4444;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    /* Estilo para garantir que os botões de resultado fiquem visíveis após o teste */
+    .resultado-acao {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="ficha-lateral">
+    <h4>FINNLEY</h4>
+    <p>🏃 AGI <span id="stat-agi">0</span></p>
+    <p>🎭 ENG <span id="stat-eng">0</span></p>
+    <p>👤 FUR <span id="stat-fur">0</span></p>
+    <p>⚔️ LUT <span id="stat-lut">0</span></p>
+    <p>🛡️ ESQ <span id="stat-esq">0</span></p>
+  </div>
+
+  <video class="video-fundo" autoplay muted loop>
+    <source src="interior-mansao.mp4" type="video/mp4">
+  </video>
+  
+  <div class="container">
+    <h1 class="titulo">Armadilha na Chaminé!</h1>
+    
+    <div class="consequencia">
+      <p>Com movimentos felinos, você desce pela chaminé escura, mas algo está errado... A superfície está estranhamente limpa e escorregadia. De repente, seus pés atingem uma grade metálica!</p>
+      
+      <p>Um alçapão se abre abaixo de você e você cai diretamente em uma rede de captura, suspensa sobre o grande salão de festas. Dezenas de rostos nobres olham para cima, surpresos, enquanto os guardas se aproximam rapidamente.</p>
+      
+      <p>"Pegamos o rato!" - grita o capitão da guarda. Lorde Everard sorri satisfeito: "Estávamos esperando você, Finnley. A chaminé foi preparada especialmente depois de seus últimos... trabalhos."</p>
+    </div>
+    
+    <div class="imagem-lateral">
+      <img src="armadilha-chamine.jpg" alt="Armadilha na chaminé">
+    </div>
+    
+    <div class="texto">
+      <p>Você está preso, mas não totalmente indefeso. Escolha sua ação e role os dados:</p>
+    </div>
+    
+    <div id="bloco-opcoes" class="opcoes">
+      <button class="opcao" onclick="tentarAcao('eng', 15, 'cena3-distracao.html')">1. Gritar "FOGO!" (Teste de Enganação - Dif 15)</button>
+      <button class="opcao" onclick="tentarAcao('lut', 14, 'cena3-faca.html')">2. Usar faca para cortar a rede (Teste de Luta - Dif 14)</button>
+      <button class="opcao" onclick="tentarAcao('eng', 18, 'cena3-negociar.html')">3. Oferecer informações (Teste de Enganação - Dif 18)</button>
+      <button class="opcao" onclick="location.href='cena3-render.html'">4. Se render (Sem teste)</button>
+    </div>
+    
+    <div class="rolagem-d20">
+      <div id="resultado-rolagem"></div>
+      <div id="resultado-final-acao" class="resultado-acao">
+          </div>
+    </div>
+  </div>
+
+  <script src="rpg-logica.js"></script>
+  <script>
+    function tentarAcao(atributo, dificuldade, linkSucesso) {
+      // Realiza o teste usando a lógica centralizada
+      const passou = realizarTeste(atributo, dificuldade);
+      
+      // Esconde as opções originais para evitar múltiplos cliques
+      document.getElementById('bloco-opcoes').style.pointerEvents = 'none';
+      document.getElementById('bloco-opcoes').style.opacity = '0.5';
+      
+      const containerResultado = document.getElementById('resultado-final-acao');
+      containerResultado.style.display = 'block';
+
+      if (passou) {
+        containerResultado.innerHTML = `
+          <p style="color: #4CAF50; margin-bottom: 15px;">A manobra funcionou! Você encontrou uma brecha!</p>
+          <a href="${linkSucesso}" class="botao-iniciar" style="text-decoration:none; display:inline-block;">Prosseguir com a fuga</a>
+        `;
+      } else {
+        containerResultado.innerHTML = `
+          <p style="color: #ff4500; margin-bottom: 15px;">Os guardas foram mais rápidos que você...</p>
+          <a href="prisao-fracasso.html" class="botao-iniciar" style="text-decoration:none; display:inline-block; background:#8b0000;">Ser levado para as masmorras</a>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>

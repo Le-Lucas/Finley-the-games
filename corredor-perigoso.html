@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Finnley - O Corredor das Armadilhas</title>
+    <link rel="stylesheet" href="cena1.css">
+    <style>
+        .passo-indicador {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .circulo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #e2b022;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #e2b022;
+        }
+        .circulo.ativo { background: #e2b022; color: #000; }
+        .circulo.sucesso { background: #4CAF50; border-color: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+    <div class="ficha-lateral">
+        <h4>FINNLEY</h4>
+        <p>🏃 AGI <span id="stat-agi">0</span></p>
+        <p>🎭 ENG <span id="stat-eng">0</span></p>
+        <p>👤 FUR <span id="stat-fur">0</span></p>
+        <p>⚔️ LUT <span id="stat-lut">0</span></p>
+        <p>🛡️ ESQ <span id="stat-esq">0</span></p>
+    </div>
+
+    <div class="container">
+        <h1 class="titulo">O Corredor da Morte</h1>
+        
+        <div class="passo-indicador">
+            <div id="step1" class="circulo ativo">1</div>
+            <div id="step2" class="circulo">2</div>
+            <div id="step3" class="circulo">3</div>
+        </div>
+
+        <div id="narrativa" class="texto">
+            <p>O caminho para os aposentos do Lorde é um campo minado. Azulejos levemente suspensos indicam armadilhas de dardos, e o reflexo das armaduras dos guardas brilha ao longe.</p>
+        </div>
+
+        <div class="opcoes" id="bloco-acoes">
+            <button class="opcao" id="btn-acao" onclick="processarPasso()">1. Identificar azulejos falsos (Furtividade)</button>
+        </div>
+
+        <div id="resultado-teste"></div>
+    </div>
+
+    <script src="rpg-logica.js"></script>
+    <script>
+        let passoAtual = 1;
+
+        const desafios = {
+            1: { texto: "Você nota placas de pressão no chão. Precisa de mãos leves para não ativar os dardos.", attr: "fur", dif: 13, msg: "1. Desarmar mecanismo (Furtividade)" },
+            2: { texto: "Uma patrulha de guardas se aproxima! Você precisa se pendurar nas vigas do teto rapidamente.", attr: "agi", dif: 14, msg: "2. Escalar vigas (Agilidade)" },
+            3: { texto: "A porta final possui um sensor de som. Um passo em falso e o alarme soará por toda Valdermar.", attr: "fur", dif: 15, msg: "3. Passos de seda (Furtividade)" }
+        };
+
+        function processarPasso() {
+            const desafio = desafios[passoAtual];
+            const passou = realizarTeste(desafio.attr, desafio.dif);
+            const btn = document.getElementById('btn-acao');
+
+            if (passou) {
+                document.getElementById(`step${passoAtual}`).className = "circulo sucesso";
+                passoAtual++;
+
+                if (passoAtual > 3) {
+                    // Vitória no corredor!
+                    document.getElementById('bloco-acoes').innerHTML = `
+                        <a href="sala-do-lord.html" class="botao-iniciar">Entrar nos Aposentos do Lorde</a>
+                    `;
+                    document.getElementById('narrativa').innerHTML = "<p>Com o coração batendo forte, você atravessa a última armadilha. A porta ornamentada do Lorde Everard está diante de você.</p>";
+                } else {
+                    // Próximo desafio
+                    const prox = desafios[passoAtual];
+                    document.getElementById(`step${passoAtual}`).className = "circulo ativo";
+                    document.getElementById('narrativa').innerHTML = `<p>${prox.texto}</p>`;
+                    btn.innerText = prox.msg;
+                }
+            } else {
+                // Falha em qualquer passo envia para o vídeo de transição
+                setTimeout(() => {
+                    window.location.href = `video-transicao.html?video=falha-armadilha&destino=prisao-fracasso`;
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>

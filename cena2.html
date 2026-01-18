@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finnley - A Primeira Escolha</title>
+  <link rel="stylesheet" href="cena1.css">
+  <style>
+    /* Estilos específicos para o pré-carregamento */
+    #video-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 1100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    
+    #loading-text {
+      color: #e2b022;
+      font-size: 1.5rem;
+      margin-top: 20px;
+      font-family: 'Cinzel', serif;
+    }
+    
+    .spinner {
+      border: 5px solid rgba(226, 176, 34, 0.3);
+      border-radius: 50%;
+      border-top: 5px solid #e2b022;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Esconder conteúdo inicialmente para o fade-in */
+    .container {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+    
+    .video-fundo {
+      display: none; /* Ativado via JS após carregamento */
+    }
+  </style>
+</head>
+<body>
+  <div class="ficha-lateral">
+    <h4>FINNLEY</h4>
+    <p>🏃 AGI <span id="stat-agi">0</span></p>
+    <p>🎭 ENG <span id="stat-eng">0</span></p>
+    <p>👤 FUR <span id="stat-fur">0</span></p>
+    <p>⚔️ LUT <span id="stat-lut">0</span></p>
+    <p>🛡️ ESQ <span id="stat-esq">0</span></p>
+  </div>
+
+  <div id="video-loader">
+    <div class="spinner"></div>
+    <div id="loading-text">Preparando a aventura...</div>
+  </div>
+
+  <video id="video-background" class="video-fundo" autoplay muted loop>
+    <source src="cidade-noturna.mp4" type="video/mp4">
+    Seu navegador não suporta vídeos HTML5.
+  </video>
+  
+  <div class="container" id="main-content">
+    <h1 class="titulo">A Grande Oportunidade</h1>
+    
+    <div class="texto">
+      <p>A lua cheia ilumina as ruas estreitas de Valdermar enquanto você, Finnley, se esconde nas sombras. O murmúrio da cidade noturna esconde seus passos silenciosos.</p>
+      
+      <p>Por semanas você observou o magnata Lorde Everard, conhecido por sua crueldade com os pobres e sua riqueza obscura. Hoje, durante seu luxuoso baile, os guardas estão distraídos e o tesouro está vulnerável.</p>
+      
+      <p>Você está no telhado da mansão, olhando para os três possíveis pontos de entrada:</p>
+    </div>
+    
+    <div class="imagem-lateral">
+      <img src="mansao.png" alt="Mansão do Lorde Everard">
+    </div>
+    
+    <div class="opcoes">
+      <button class="opcao" onclick="location.href='chamine.html'">1. Descer pela chaminé (furtividade +2, risco de se sujar)</button>
+      <button class="opcao" onclick="location.href='janela.html'">2. Escalar até a janela do escritório (agilidade testada)</button>
+      <button class="opcao" onclick="location.href='disfarce.html'">3. Entrar disfarçado como servo (enganação necessária)</button>
+    </div>
+    
+    <div class="rolagem-d20">
+      <p class="subtitulo">Precisa de sorte?</p>
+      <button class="rolar-d20" onclick="realizarTeste('agi', 10)">Rolar D20 (Teste de Sorte/Agilidade)</button>
+      <div id="resultado-rolagem"></div>
+    </div>
+  </div>
+
+  <script src="rpg-logica.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.getElementById('video-background');
+      const loader = document.getElementById('video-loader');
+      const mainContent = document.getElementById('main-content');
+      
+      video.load();
+      
+      video.addEventListener('loadeddata', function() {
+        video.style.display = 'block';
+        video.muted = false; // Ativa o áudio após o carregamento
+        
+        // Simulação de tempo de carregamento para imersão
+        setTimeout(function() {
+          loader.style.transition = 'opacity 1s ease';
+          loader.style.opacity = '0';
+          mainContent.style.opacity = '1';
+          
+          setTimeout(function() {
+            loader.style.display = 'none';
+          }, 1000);
+        }, 3000);
+      });
+      
+      // Fallback para conexão lenta
+      setTimeout(function() {
+        if(loader.style.display !== 'none') {
+          loader.style.display = 'none';
+          video.style.display = 'block';
+          mainContent.style.opacity = '1';
+        }
+      }, 8000);
+    });
+  </script>
+</body>
+</html>

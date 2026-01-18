@@ -1,0 +1,188 @@
+/* Estilo Específico para Cena 1 - Contraste com Vídeo Escuro */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Cinzel', 'Georgia', serif; /* Fonte temática medieval */
+  color: #f0f0f0;
+  overflow-x: hidden;
+  background-color: #000; /* Fallback para caso o vídeo não carregue */
+}
+
+/* Container Principal */
+.container {
+  width: 90%;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: rgba(20, 20, 20, 0.85);
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+  border: 1px solid #444;
+  position: relative;
+  z-index: 10;
+}
+
+/* Vídeo de Fundo - Escurecido */
+.video-fundo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+/* Títulos com Contraste */
+.titulo {
+  color: #e2b022;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+  letter-spacing: 1px;
+  font-weight: 700;
+  border-bottom: 2px solid #e2b022;
+  padding-bottom: 0.5rem;
+  animation: fadeIn 1.5s ease-out;
+}
+
+/* Texto Principal */
+.texto {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  animation: fadeIn 2s ease-out;
+  background-color: rgba(30, 30, 30, 0.6);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #e2b022;
+}
+
+/* Opções de Escolha */
+.opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin: 2rem 0;
+}
+
+.opcao {
+  background: linear-gradient(to right, #3a3a3a, #2a2a2a);
+  color: #f0f0f0;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-align: left;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  border-left: 4px solid #e2b022;
+  animation: slideIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.opcao:nth-child(1) { animation-delay: 0.2s; }
+.opcao:nth-child(2) { animation-delay: 0.4s; }
+.opcao:nth-child(3) { animation-delay: 0.6s; }
+
+.opcao:hover {
+  background: linear-gradient(to right, #4a4a4a, #3a3a3a);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+  border-left: 4px solid #f0c040;
+}
+
+/* Imagem Lateral */
+.imagem-lateral {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.imagem-lateral img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #e2b022;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.imagem-lateral img:hover {
+  transform: scale(1.02);
+}
+
+/* Rolagem D20 */
+.rolagem-d20 {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.rolar-d20 {
+  background: linear-gradient(to right, #4e3a1e, #3a2c15);
+  color: #e2b022;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.rolar-d20:hover {
+  background: linear-gradient(to right, #5e4a2e, #4a3c25);
+  transform: translateY(-2px);
+}
+
+#resultado-rolagem {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #e2b022;
+  animation: pulse 2s infinite;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 1.5rem;
+  }
+  
+  .titulo {
+    font-size: 2rem;
+  }
+  
+  .texto {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+  
+  .opcao {
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+  }
+}

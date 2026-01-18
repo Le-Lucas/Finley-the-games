@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finnley - Transição</title>
+    <link rel="stylesheet" href="cena1.css">
+    <style>
+        body {
+            background: #000;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Cinzel', serif;
+        }
+
+        .video-container {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        video {
+            width: 100%;
+            border: 3px solid #e2b022;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(226, 176, 34, 0.4);
+            background: #000;
+        }
+
+        .legenda-automatica {
+            margin-top: 25px;
+            font-size: 1.4rem;
+            color: #e2b022;
+            text-shadow: 2px 2px 4px #000;
+            min-height: 1.5em;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <video id="playerTransicao" autoplay playsinline>
+            <source id="videoSource" src="" type="video/mp4">
+            Seu navegador não suporta vídeos.
+        </video>
+        
+        <div id="legenda" class="legenda-automatica"></div>
+    </div>
+
+    <script>
+        // 1. Capturar os dados da URL (?video=NOME&destino=PAGINA)
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoAlvo = urlParams.get('video');    // Ex: falha-chamine
+        const proximaPagina = urlParams.get('destino'); // Ex: prisao-fracasso
+
+        const player = document.getElementById('playerTransicao');
+        const source = document.getElementById('videoSource');
+        const legenda = document.getElementById('legenda');
+
+        // 2. Configurar o vídeo e frases personalizadas
+        if (videoAlvo) {
+            source.src = videoAlvo + ".mp4";
+            player.load();
+            
+            // Tentativa de tirar o mute (Browsers exigem interação prévia para som alto)
+            player.muted = false; 
+
+            // Textos automáticos baseados no nome do vídeo
+            const textos = {
+                'falha-chamine': "A rede se fecha... o destino de um ladino é incerto.",
+                'falha-queda': "Um passo em falso, e o chão se torna seu pior inimigo.",
+                'falha-enganacao': "Suas mentiras não foram páreo para os olhos do guarda.",
+                'sucesso-espetacular': "Uma execução perfeita! As sombras te favorecem."
+            };
+
+            legenda.innerText = textos[videoAlvo] || "O destino se revela...";
+        }
+
+        // 3. Quando o vídeo terminar, redireciona automaticamente
+        player.onended = function() {
+            if (proximaPagina) {
+                window.location.href = proximaPagina + ".html";
+            } else {
+                // Caso esqueça de passar o destino, volta para o início por segurança
+                window.location.href = "cena2.html";
+            }
+        };
+
+        // Fallback: Se o vídeo der erro, pula para a próxima página após 3 segundos
+        player.onerror = function() {
+            console.error("Erro ao carregar vídeo de transição.");
+            setTimeout(() => {
+                window.location.href = proximaPagina + ".html";
+            }, 2000);
+        };
+    </script>
+</body>
+</html>

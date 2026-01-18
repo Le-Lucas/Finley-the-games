@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apresentação do Jogo - Finnley</title>
+  <link rel="stylesheet" href="apresentacao.css">
+  <style>
+    /* Estilos para a Ficha de Criação */
+    .criacao-ficha {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border: 2px solid #e2b022;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    .attr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .atributo-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 5px;
+      font-family: 'Cinzel', serif;
+      color: white;
+    }
+    .controles {
+      display: flex;
+      align-items: center;
+    }
+    .controles button {
+      background: #e2b022;
+      border: none;
+      color: black;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 3px;
+    }
+    .valor-attr {
+      font-size: 1.1rem;
+      margin: 0 10px;
+      color: #fff;
+      min-width: 20px;
+      text-align: center;
+    }
+    .pontos-restantes {
+      color: #e2b022;
+      font-weight: bold;
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    /* Estilo para desativar o botão se houver pontos sobrando */
+    .botao-iniciar.disabled {
+      background: #555;
+      cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <video class="video-fundo" autoplay muted loop id="bgVideo">
+      <source src="apresentacao.mp4" type="video/mp4">
+      Seu navegador não suporta vídeos HTML5.
+    </video>
+    
+    <div class="conteudo-principal">
+      <div class="apresentacao">
+        <h1>Bem-vindo ao mundo de Finnley!</h1>
+      </div>
+      
+      <div class="informacoes-jogo">
+        <div class="regras">
+          <h2>Prepare sua Ficha</h2>
+          <div class="criacao-ficha">
+            <p class="pontos-restantes">Pontos Disponíveis: <span id="pontos">10</span></p>
+            
+            <div class="attr-grid">
+              <div class="atributo-row">
+                <span>🏃 Agilidade</span>
+                <div class="controles">
+                  <button onclick="mudar('agi', -1)">-</button>
+                  <span id="val-agi" class="valor-attr">0</span>
+                  <button onclick="mudar('agi', 1)">+</button>
+                </div>
+              </div>
+              
+              <div class="atributo-row">
+                <span>🎭 Enganação</span>
+                <div class="controles">
+                  <button onclick="mudar('eng', -1)">-</button>
+                  <span id="val-eng" class="valor-attr">0</span>
+                  <button onclick="mudar('eng', 1)">+</button>
+                </div>
+              </div>
+              
+              <div class="atributo-row">
+                <span>👤 Furtividade</span>
+                <div class="controles">
+                  <button onclick="mudar('fur', -1)">-</button>
+                  <span id="val-fur" class="valor-attr">0</span>
+                  <button onclick="mudar('fur', 1)">+</button>
+                </div>
+              </div>
+
+              <div class="atributo-row">
+                <span>⚔️ Luta</span>
+                <div class="controles">
+                  <button onclick="mudar('lut', -1)">-</button>
+                  <span id="val-lut" class="valor-attr">0</span>
+                  <button onclick="mudar('lut', 1)">+</button>
+                </div>
+              </div>
+
+              <div class="atributo-row">
+                <span>🛡️ Esquiva</span>
+                <div class="controles">
+                  <button onclick="mudar('esq', -1)">-</button>
+                  <span id="val-esq" class="valor-attr">0</span>
+                  <button onclick="mudar('esq', 1)">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="historia">
+          <h2>Prévias da História</h2>
+          <p>Finnley cresceu nas ruas de Valdermar, aprendendo a sobreviver. Os teus atributos definem como irás lidar com os perigos da mansão.</p>
+        </div>
+        
+        <div class="imagem-lateral">
+          <img src="finnley.jpg" alt="Imagem de Finnley, o ladino">
+        </div>
+      </div>
+      
+      <a href="cena2.html" id="link-iniciar" class="botao-iniciar disabled" onclick="finalizarFicha(event)">Iniciar Aventura</a>
+    </div>
+  </div>
+
+  <script>
+    let pontosDisponiveis = 10;
+    const atributos = {
+      agi: 0,
+      eng: 0,
+      fur: 0,
+      lut: 0,
+      esq: 0
+    };
+
+    function mudar(attr, delta) {
+      if (delta > 0 && pontosDisponiveis > 0) {
+        atributos[attr]++;
+        pontosDisponiveis--;
+      } else if (delta < 0 && atributos[attr] > 0) {
+        atributos[attr]--;
+        pontosDisponiveis++;
+      }
+      
+      // Atualizar interface
+      document.getElementById('pontos').innerText = pontosDisponiveis;
+      document.getElementById('val-' + attr).innerText = atributos[attr];
+      
+      // Habilitar/Desabilitar botão
+      const btn = document.getElementById('link-iniciar');
+      if (pontosDisponiveis === 0) {
+        btn.classList.remove('disabled');
+      } else {
+        btn.classList.add('disabled');
+      }
+    }
+
+    function finalizarFicha(event) {
+      if (pontosDisponiveis > 0) {
+        event.preventDefault();
+        alert("Distribui todos os pontos antes de começar a aventura!");
+        return;
+      }
+      
+      // Salvar atributos no localStorage para usar nas cenas
+      localStorage.setItem('finnley_agi', atributos.agi);
+      localStorage.setItem('finnley_eng', atributos.eng);
+      localStorage.setItem('finnley_fur', atributos.fur);
+      localStorage.setItem('finnley_lut', atributos.lut);
+      localStorage.setItem('finnley_esq', atributos.esq);
+    }
+  </script>
+</body>
+</html>

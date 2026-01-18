@@ -1,0 +1,102 @@
+body {
+  background-color: black;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 80%;
+  margin: 40px auto;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+}
+
+.video-fundo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+
+.apresentacao {
+  animation: fadeIn 2s;
+  color: white;
+ 
+}
+
+.regras {
+  animation: slideIn 2s;
+  color: white;
+}
+
+.historia {
+  animation: fadeIn 2s;
+  color: white;
+}
+
+.imagem-lateral {
+  float: center;
+  margin: 20px;
+  animation: pulse 3s infinite;
+  
+}
+
+.imagem-lateral img {
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+}
+
+.botao-iniciar {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  animation: pulse 2s infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Cores */
+_azul {
+  color: #2196F3;
+}
+
+.amarelo {
+  color: #F7DC6F;
+}

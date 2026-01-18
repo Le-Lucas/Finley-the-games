@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finnley - A Janela do Escritório</title>
+    <link rel="stylesheet" href="cena1.css"> 
+    <style>
+        body { background: #0a0a0a; color: #ddd; font-family: 'Cinzel', serif; }
+        .container { max-width: 800px; margin: 50px auto; padding: 20px; text-align: center; }
+        .status-badge { color: #ff4500; font-weight: bold; border: 1px solid #ff4500; padding: 5px; margin-bottom: 20px; display: inline-block; }
+        #resultado-teste { margin-top: 20px; font-weight: bold; min-height: 50px; }
+        
+        /* Container para os botões de decisão após o teste */
+        .resultado-acao {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ficha-lateral">
+        <h4>FINNLEY</h4>
+        <p>🏃 AGI <span id="stat-agi">0</span></p>
+        <p>🎭 ENG <span id="stat-eng">0</span></p>
+        <p>👤 FUR <span id="stat-fur">0</span></p>
+        <p>⚔️ LUT <span id="stat-lut">0</span></p>
+        <p>🛡️ ESQ <span id="stat-esq">0</span></p>
+    </div>
+
+    <div class="container">
+        <div class="status-badge">TESTE DE AGILIDADE: Dificuldade 15</div>
+        <h1 class="titulo">O Salto da Fé</h1>
+        
+        <div class="texto">
+            <p>O vento uiva entre as gárgulas de pedra. A janela do escritório de Everard está entreaberta, mas o caminho exige que você se equilibre em uma viga estreita e salte para uma sacada úmida.</p>
+            <p>Um deslize aqui e o fim não será apenas o fracasso da missão, mas uma queda mortal para o pátio de mármore.</p>
+        </div>
+
+        <div class="rolagem-d20">
+            <button id="btn-rolar" class="rolar-d20" onclick="testarAgilidade()">Rolar D20 + Agilidade</button>
+            
+            <div id="resultado-teste"></div>
+            
+            <div id="proximos-passos" class="resultado-acao">
+                </div>
+        </div>
+    </div>
+
+    <script src="rpg-logica.js"></script>
+    <script>
+        function testarAgilidade() {
+            // Executa o teste usando o atributo 'agi' (Agilidade) contra Dificuldade 15
+            const passou = realizarTeste('agi', 15);
+            
+            // Bloqueia o botão para não rolar várias vezes
+            const btnRolar = document.getElementById('btn-rolar');
+            btnRolar.disabled = true;
+            btnRolar.style.opacity = "0.5";
+
+            const containerPassos = document.getElementById('proximos-passos');
+            containerPassos.style.display = 'block';
+
+            if (passou) {
+                containerPassos.innerHTML = `
+                    <p style="color: #4CAF50; margin-bottom: 15px;">Você se move como uma sombra, saltando com precisão felina para a sacada!</p>
+                    <a href="escritorio-sucesso.html" class="opcao" style="display:inline-block; text-decoration:none;">Entrar Silenciosamente</a>
+                `;
+            } else {
+                containerPassos.innerHTML = `
+                    <p style="color: #ff4500; margin-bottom: 15px;">O seu pé escorrega no lodo da calha! Você perde o equilíbrio!</p>
+                    <a href="queda-fracasso.html" class="opcao" style="display:inline-block; text-decoration:none; background: #8b0000; color: white;">Tentar se segurar no último instante!</a>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

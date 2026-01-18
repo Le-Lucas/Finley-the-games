@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Finnley - O Tesouro de Valdermar</title>
+    <link rel="stylesheet" href="cena1.css">
+    <style>
+        .modo-combate { border: 3px solid #ff4500 !important; background: rgba(50, 0, 0, 0.9) !important; }
+        .hp-bar { width: 100%; height: 20px; background: #444; border-radius: 10px; margin: 10px 0; overflow: hidden; }
+        #hp-fill { width: 100%; height: 100%; background: #ff4500; transition: width 0.5s ease; }
+        .alerta-final { color: #ff4500; font-weight: bold; font-size: 1.5rem; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <div class="ficha-lateral">
+        <h4>FINNLEY</h4>
+        <p>🏃 AGI <span id="stat-agi">0</span></p>
+        <p>🎭 ENG <span id="stat-eng">0</span></p>
+        <p>👤 FUR <span id="stat-fur">0</span></p>
+        <p>⚔️ LUT <span id="stat-lut">0</span></p>
+        <p>🛡️ ESQ <span id="stat-esq">0</span></p>
+    </div>
+
+    <div id="container-final" class="container">
+        <h1 id="titulo-cena" class="titulo">O Cofre de Everard</h1>
+        
+        <div id="narrativa" class="texto">
+            <p>O escritório é luxuoso. No centro, um cofre de ferro frio com uma combinação mágica. O tesouro que pode mudar sua vida está a poucos centímetros.</p>
+        </div>
+
+        <div id="status-combate" style="display:none;">
+            <p>Sua Resistência:</p>
+            <div class="hp-bar"><div id="hp-fill"></div></div>
+        </div>
+
+        <div class="opcoes" id="bloco-acoes">
+            <button class="opcao" onclick="tentarRouboSilencioso()">Abrir o cofre silenciosamente (Furtividade - Dif 19)</button>
+        </div>
+
+        <div id="resultado-teste"></div>
+    </div>
+
+    <script src="rpg-logica.js"></script>
+    <script>
+        let emCombate = false;
+        let vida = 100;
+
+        function tentarRouboSilencioso() {
+            const passou = realizarTeste('fur', 19);
+            
+            if (passou) {
+                document.getElementById('narrativa').innerHTML = "<p class='alerta-final' style='color:#4CAF50'>Sucesso Lendário!</p><p>Você abre o cofre sem um estalo. O colar de diamantes e as moedas de platina são seus. Você desaparece na noite antes que alguém note.</p>";
+                document.getElementById('bloco-acoes').innerHTML = `<a href="final-bom.html" class="botao-iniciar">Escapar vitorioso</a>`;
+            } else {
+                iniciarCombate("O mecanismo trava e um sino ecoa pela mansão! A porta explode e Lorde Everard entra com seus guardas: 'VOCÊ NÃO SAIRÁ VIVO, RATO!'");
+            }
+        }
+
+        function iniciarCombate(msg) {
+            emCombate = true;
+            document.getElementById('container-final').classList.add('modo-combate');
+            document.getElementById('titulo-cena').innerText = "CONFRONTO FINAL";
+            document.getElementById('narrativa').innerHTML = `<p class='alerta-final'>ALARME!</p><p>${msg}</p>`;
+            document.getElementById('status-combate').style.display = 'block';
+            
+            menuCombate();
+        }
+
+        function menuCombate() {
+            document.getElementById('bloco-acoes').innerHTML = `
+                <button class="opcao" onclick="turnoCombate('lut', 16)">Atacar Guardas (Luta - Dif 16)</button>
+                <button class="opcao" onclick="turnoCombate('esq', 17)">Esquivar do Lorde (Esquiva - Dif 17)</button>
+            `;
+        }
+
+        function turnoCombate(attr, dif) {
+            const passou = realizarTeste(attr, dif);
+            
+            if (passou) {
+                document.getElementById('narrativa').innerHTML = "<p>Você golpeia com precisão! Os guardas recuam e você vê uma brecha para a janela!</p>";
+                document.getElementById('bloco-acoes').innerHTML = `<a href="final-fuga-epica.html" class="botao-iniciar">Pular pela Janela com o Tesouro!</a>`;
+            } else {
+                vida -= 50;
+                document.getElementById('hp-fill').style.width = vida + "%";
+                
+                if (vida <= 0) {
+                    window.location.href = "video-transicao.html?video=falha-luta&destino=prisao-fracasso";
+                } else {
+                    document.getElementById('narrativa').innerHTML = "<p>Você foi atingido! O Lorde é mais forte do que parece. Você só tem mais uma chance!</p>";
+                    menuCombate();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
